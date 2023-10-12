@@ -1,0 +1,1 @@
+print("håper dette funker tihi")
