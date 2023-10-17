@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect
 from models import Employee
 from flask import Flask, request, jsonify
 
@@ -11,20 +11,14 @@ def home():
     return render_template("home.html")
 
 
-
-
-
-
-@staticmethod
-def create(name, address, branch):
-    return Employee(name, address, branch)
-        
-def read(self):
-    return f"Name: {self.name}, address: {self.address}, branch: {self.branch}"
-
-def update(self):
-    pass
-
-@staticmethod
-def delete(employee):
-    del employee
+@views.route('/data/create' , methods = ['GET','POST'])
+def create():
+    if request.method == 'GET':
+        return render_template('createpage.html')
+ 
+    if request.method == 'POST':
+        name = request.form['name']
+        address = request.form['address']
+        branch = request.form['branch']
+        employee = Employee(name=name, address=address, branch = branch)
+        return redirect('/data')
