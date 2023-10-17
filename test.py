@@ -1,3 +1,5 @@
 print("håper dette funker tihi")
 
-#dqfsajip<gupgupi3rguedw
+class Car:
+    def __init__(brand, price, loglodsd) -> None:
+        pass
