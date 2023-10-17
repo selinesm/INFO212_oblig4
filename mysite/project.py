@@ -1,8 +1,10 @@
 from flask import Flask
-from my_services import views
 
 app = Flask(__name__)
-app.register_blueprint(views, url_prefix="/")
+
+@app.route("/")
+def home():
+    return "Home"
 
 
 if __name__ == "__main__":
