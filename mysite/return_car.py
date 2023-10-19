@@ -1,5 +1,6 @@
-from project import app, graph
+from project import app
 from flask import request, jsonify
+from neo4j import graph
 
 @app.route('/return-car', methods=['POST'])
 def return_car():
