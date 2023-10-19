@@ -6,11 +6,15 @@ from flask import Flask
 from neo4j import GraphDatabase
 
 from flask import Flask, request, jsonify
-
+"""
 app = Flask(__name__)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True)"""
+
+@app.route("/test", methods=["POST"])
+def test():
+    render_template("createpage.html")
 
 
 @app.route("/get_cars", methods=["GET"])
@@ -53,7 +57,6 @@ def delete_car_info():
 
 
 #EMPLOYEE
-app = Flask(__name__)
 
 # Set up the Neo4j connection
 graph = GraphDatabase("bolt://localhost:7687", auth=("username", "password"))  # Replace with your Neo4j credentials
@@ -88,12 +91,6 @@ def delete_employee(employee_id):
     query = "MATCH (employee:Employee) WHERE ID(employee) = $id DELETE employee"
     graph.run(query, id=employee_id)
     return 'Employee deleted', 200
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
 
 
 

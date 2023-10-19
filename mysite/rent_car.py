@@ -12,6 +12,3 @@ def rent_car():
     graph.run(query)
 
     return jsonify({'message': 'Car rented successfully'})
-
-if __name__ == '__main__':
-    app.run(debug=True)

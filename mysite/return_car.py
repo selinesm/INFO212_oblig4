@@ -13,6 +13,3 @@ def return_car():
     graph.run(query)
 
     return jsonify({'message': f'Car returned and marked as {car_status}'})
-
-if __name__ == '__main__':
-    app.run(debug=True)
