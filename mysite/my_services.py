@@ -5,6 +5,14 @@ from models import Employee
 from flask import Flask
 from neo4j import GraphDatabase
 
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
 @app.route("/get_cars", methods=["GET"])
 def query_records():
     return findAllCars()
