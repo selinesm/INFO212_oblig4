@@ -1,6 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify
 from project import app
 from models.my_dao import *
+from models import Employee
+from flask import Flask
+from neo4j import GraphDatabase
 
 @app.route("/get_cars", methods=["GET"])
 def query_records():
@@ -39,3 +42,51 @@ def delete_car_info():
     print(record)
     delete_car(record['reg'])
     return findAllCars()
+
+
+#EMPLOYEE
+app = Flask(__name__)
+
+# Set up the Neo4j connection
+graph = GraphDatabase("bolt://localhost:7687", auth=("username", "password"))  # Replace with your Neo4j credentials
+
+# Create (Add) a new employee
+@app.route('/employees', methods=['POST'])
+def add_employee():
+    data = request.json
+    new_employee = Employee(name=data['name'], address=data['address'], branch=data['branch'])
+    graph.create(new_employee)
+    return jsonify(new_employee), 201
+
+# Read (Get) employees
+@app.route('/employees', methods=['GET'])
+def get_employees():
+    query = "MATCH (employee:Employee) RETURN employee"
+    results = graph.run(query)
+    employee_data = [record['employee'] for record in results]
+    return jsonify(employee_data)
+
+# Update (Edit) employee information
+@app.route('/employees/<int:employee_id>', methods=['PUT'])
+def update_employee(employee_id):
+    data = request.json
+    query = "MATCH (employee:Employee) WHERE ID(employee) = $id SET employee.name = $name, employee.address = $address, employee.branch = $branch"
+    graph.run(query, id=employee_id, name=data['name'], address=data['address'], branch=data['branch'])
+    return 'Employee updated', 200
+
+# Delete (Remove) an employee
+@app.route('/employees/<int:employee_id>', methods=['DELETE'])
+def delete_employee(employee_id):
+    query = "MATCH (employee:Employee) WHERE ID(employee) = $id DELETE employee"
+    graph.run(query, id=employee_id)
+    return 'Employee deleted', 200
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
+
+
+
+
+
+
