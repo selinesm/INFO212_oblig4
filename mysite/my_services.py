@@ -1,21 +1,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify
-from project import app
+#from project import app
 from models.my_dao import *
-from models import Employee
+#from models import Employee
 from flask import Flask
 from neo4j import GraphDatabase
 
 from flask import Flask, request, jsonify
-"""
-app = Flask(__name__)
 
-if __name__ == "__main__":
-    app.run(debug=True)"""
+app = Blueprint("app", __name__)
 
-@app.route("/test", methods=["POST"])
-def test():
-    render_template("createpage.html")
-
+@app.route("/")
+def home():
+    return render_template("home.html")
 
 @app.route("/get_cars", methods=["GET"])
 def query_records():
@@ -59,7 +55,7 @@ def delete_car_info():
 #EMPLOYEE
 
 # Set up the Neo4j connection
-graph = GraphDatabase("bolt://localhost:7687", auth=("username", "password"))  # Replace with your Neo4j credentials
+"""""graph = GraphDatabase("bolt://localhost:7687", auth=("username", "password"))  # Replace with your Neo4j credentials
 
 # Create (Add) a new employee
 @app.route('/employees', methods=['POST'])
@@ -90,7 +86,7 @@ def update_employee(employee_id):
 def delete_employee(employee_id):
     query = "MATCH (employee:Employee) WHERE ID(employee) = $id DELETE employee"
     graph.run(query, id=employee_id)
-    return 'Employee deleted', 200
+    return 'Employee deleted', 200"""""
 
 
 

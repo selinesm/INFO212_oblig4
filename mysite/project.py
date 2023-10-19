@@ -1,7 +1,9 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, render_template
+from my_services import app
 
-app = Flask(__name__)
-views = Blueprint("views", __name__)
+application = Flask(__name__)
+application.register_blueprint(app, url_prefix="/")
+
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    application.run(debug=True)
