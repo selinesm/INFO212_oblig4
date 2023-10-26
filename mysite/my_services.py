@@ -1,16 +1,8 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, Flask
 from project import app
 from models.my_dao import *
 from models import Employee
-from flask import Flask
 from neo4j import GraphDatabase
-
-from flask import Flask, request, jsonify
-"""
-app = Flask(__name__)
-
-if __name__ == "__main__":
-    app.run(debug=True)"""
 
 @app.route("/test", methods=["POST"])
 def test():
