@@ -23,8 +23,7 @@ cars = [
         "brand": "Ford",
         "model": "Explorer",
         "year": "2012",
-        "Location": "Bergen",
-        "Available": True
+        "Location": "Bergen"
     }
 ]
 
