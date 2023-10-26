@@ -1,8 +1,8 @@
 from neo4j import GraphDatabase, Driver, AsyncGraphDatabase, AsyncDriver
 import re
 
-URI = 'YOUR URI'
-AUTH =('neo4j', 'PASSWORD')
+URI = 'bolt://localhost:7687'
+AUTH =('neo4j', 'password')
 
 def _get_connection() -> Driver:
     driver = GraphDatabase.driver(URI, auth= AUTH)
@@ -11,7 +11,7 @@ def _get_connection() -> Driver:
     return driver
 
 def findUserByUsername(username):
-    data = _get_connection().execute_query('MATCH (a:User) where a.username = $username RETURN a;' username= username)
+    data = _get_connection().execute_query('MATCH (a:User) where a.username = $username RETURN a;', username= username)
     if len(data[0])>0:
         user = User(username, data[0][0][0]['email'])
         return user
@@ -36,3 +36,19 @@ class User:
     
     def set_Email(self, value):
         self.email = value
+
+
+def create_user(username, email):
+    driver = GraphDatabase.driver(URI, auth=AUTH)
+
+    with driver.session() as session:
+        # Create a new user node in the database.
+        session.write_transaction(_create_user, username, email)
+
+def _create_user(tx, username, email):
+    query = "CREATE (u:User {username: $username, email: $email})"
+    tx.run(query, username=username, email=email)
+
+# Example of creating a user
+new_user = User("new_user", "new_user@example.com")
+create_user(new_user.get_username(), new_user.get_email())
