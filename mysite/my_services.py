@@ -1,13 +1,14 @@
-from flask import Blueprint, render_template, request, redirect, url_for, jsonify
-#from project import app
+
+from flask import Blueprint, render_template, request, redirect, url_for, jsonify, Flask
+from project import app
 from models.my_dao import *
-#from models import Employee
-from flask import Flask
+from models import Employee
 from neo4j import GraphDatabase
 
-from flask import Flask, request, jsonify
+@app.route("/test", methods=["POST"])
+def test():
+    render_template("createpage.html")
 
-app = Blueprint("app", __name__)
 
 @app.route("/")
 def home():
