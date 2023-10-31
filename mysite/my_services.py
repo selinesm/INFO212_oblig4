@@ -9,10 +9,10 @@ from neo4j import GraphDatabase
 def test():
     render_template("createpage.html")
 
-
 @app.route("/")
 def home():
     return render_template("home.html")
+
 
 @app.route("/get_cars", methods=["GET"])
 def query_records():
