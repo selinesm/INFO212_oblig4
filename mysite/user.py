@@ -7,14 +7,13 @@ AUTH =('neo4j', 'Cjwjw4-IB4plLSQIP648TceZuGI9ObbWiUkRbZ8YnRw')
 def _get_connection() -> Driver:
     driver = GraphDatabase.driver(URI, auth= AUTH)
     driver.verify_connectivity()
-
     return driver
 
 def findUserByUsername(username):
-    data = _get_connection().execute_query('MATCH (a:User) where a.username = $username RETURN a;', username= username)
+    data = _get_connection().execute_query('MATCH (a:User) where a.username = $username RETURN a;', username=username)
     if len(data[0])>0:
         user = User(username, data[0][0][0]['email'])
-        return user
+        return user, user.username, user.email
     
     else: 
         return User(username, 'Not found in DB')
@@ -52,3 +51,6 @@ def _create_user(tx, username, email):
 # Example of creating a user
 new_user = User("new_user", "new_user@example.com")
 create_user(new_user.get_Username(), new_user.get_Email())
+
+new_user1 = User("Ørnaren", "ørnarenørn@ørn.ørn")
+create_user(new_user1.get_Username(), new_user1.get_Email())

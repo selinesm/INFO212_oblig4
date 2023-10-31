@@ -1,17 +1,24 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, Flask
-from project import app
+#from project import app
 from models.my_dao import *
-from models import Employee
+from user import *
+#from models import Employee
 from neo4j import GraphDatabase
 
-@app.route("/test", methods=["POST"])
-def test():
-    render_template("createpage.html")
+app = Blueprint("views", __name__)
 
 @app.route("/")
 def home():
     return render_template("home.html")
+
+
+@app.route("/", methods=["POST"])
+def process_input():
+    username = request.form.get("username_id")
+    user, user_name, user_email = findUserByUsername(username)
+    return render_template("home.html", username=user_name, useremail=user_email)
+
 
 
 @app.route("/get_cars", methods=["GET"])
