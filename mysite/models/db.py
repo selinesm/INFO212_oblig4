@@ -32,9 +32,9 @@ cars = [
 ]
 
 def connect():
-    uri = "bolt://localhost:7687"
+    uri = "neo4j+s://df132ca1.databases.neo4j.io"
     username = "neo4j"
-    password = "password"
+    password = "Cjwjw4-IB4plLSQIP648TceZuGI9ObbWiUkRbZ8YnRw"
 
     driver = GraphDatabase.driver(uri, auth=(username, password))
 
