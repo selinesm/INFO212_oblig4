@@ -13,10 +13,10 @@ def findUserByUsername(username):
     data = _get_connection().execute_query('MATCH (a:User) where a.username = $username RETURN a;', username=username)
     if len(data[0])>0:
         user = User(username, data[0][0][0]['email'])
-        return user, user.username, user.email
+        return [user.username, user.email]
     
     else: 
-        return User(username, 'Not found in DB')
+        return None
     
 
 class User:

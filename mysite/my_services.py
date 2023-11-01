@@ -6,18 +6,33 @@ from user import *
 #from models import Employee
 from neo4j import GraphDatabase
 
-app = Blueprint("views", __name__)
+app = Blueprint("app", __name__)
 
 @app.route("/")
-def home():
-    return render_template("home.html")
-
+def login():
+    return render_template("login.html")
 
 @app.route("/", methods=["POST"])
 def process_input():
+    error_message = None
     username = request.form.get("username_id")
-    user, user_name, user_email = findUserByUsername(username)
-    return render_template("home.html", username=user_name, useremail=user_email)
+    user_info = findUserByUsername(username)
+
+    try:
+        if user_info:
+            print(user_info)
+            return redirect(url_for("app.home", username=user_info[0], useremail=user_info[1]))
+        else:
+            error_message = "Invalid account"
+    except Exception as e:
+        error_message = f"Error: {str(e)}"
+
+    return render_template("login.html", error_message=error_message)
+
+
+@app.route("/home/<username><useremail>")
+def home(username, useremail):
+    return render_template("home.html", username=username, useremail=useremail)
 
 
 
