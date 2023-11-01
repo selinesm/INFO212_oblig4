@@ -1,9 +1,6 @@
 from models import Customer, Employee, Cars
 from neo4j import GraphDatabase
 
-from models import Customer, Employee, Cars
-from neo4j import GraphDatabase
-
 customers = [
     {
         "name": "John",
