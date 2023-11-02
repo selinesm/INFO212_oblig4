@@ -74,6 +74,32 @@ def delete_car_info():
     delete_car(record['reg'])
     return findAllCars()
 
+#Check if user has rented a car
+def check_user(user_id):
+    query = """
+    MATCH (u:User {id: $user_id})-[:HAS_RENTED]->(c:Car)
+    RETURN COUNT(c) > 0 AS has_rented
+    """
+    with GraphDatabase.driver(uri, auth=(user, password)) as driver:
+        with driver.session() as session:
+            result = session.run(query, user_id=user_id).single()
+            if result:
+                has_rented = result["has_rented"]
+                return has_rented
+            else:
+                return False
+
+@app.route('/check_user/<int:user_id>')
+def check_rental_status(user_id):
+    has_rented = check_user(user_id)
+    
+    if has_rented:
+        return 'User has rented a car'
+    else:
+        return 'User has not rented a car'
+
+#if __name__ == '__main__':
+ #   app.run()
 
 #EMPLOYEE
 
