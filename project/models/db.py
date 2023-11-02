@@ -7,7 +7,8 @@ customers = [
         "name": "John",
         "age": 30,
         "address": "Bergen 123"
-    },
+    }
+
 ]
 
 employees = [
@@ -42,8 +43,8 @@ def connect():
         for employee_data in employees:
             create_employee_node(session, employee_data)
         
-        """for car_data in cars:
-            create_car_node(session, car_data)"""
+        for car_data in cars:
+            create_car_node(session, car_data)
 
     driver.close()
 
