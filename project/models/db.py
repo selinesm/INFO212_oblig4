@@ -1,7 +1,7 @@
 from models import Customer, Employee, Cars
 from neo4j import GraphDatabase
 from my_dao import save_car
-
+"""
 customers = [
     {
         "name": "John",
@@ -63,3 +63,4 @@ def create_employee_node(tx, employee_data):
 
 # Kall connect() for å koble til Neo4j og lagre data
 connect()
+"""
