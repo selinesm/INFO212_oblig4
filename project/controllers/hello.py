@@ -1,7 +1,6 @@
 from project import app
 from flask import render_template, request, redirect, url_for
 from project.models.User import findUserByUsername
-from models.User import create_user
 
 #route index
 @app.route('/', methods=["GET", "POST"])
