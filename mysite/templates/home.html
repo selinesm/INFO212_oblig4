@@ -6,6 +6,17 @@
     <title>{{ data['title'] }}</title>
 </head>
 <body>
-    <h1>hello</h1>
+    <h1>Enter your user-name</h1>
+
+    <form method="post">
+        Username: <input name="username"/>
+        <br/><br/>
+        <button type="submit">Submit</button>
+
+    </form>
+    
+    <h1>Information from database</h1>
+    <h2>Username: {{ data['username'] }}</h2></br>
+    <h2>Email: {{data['email'] }}</h2>
 </body>
 </html>
