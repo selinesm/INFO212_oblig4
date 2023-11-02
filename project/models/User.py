@@ -48,14 +48,10 @@ def create_user(username, email):
         session.write_transaction(_create_user, username, email)
     
         
-
 def _create_user(tx, username, email):
     query = "CREATE (u:User {username: $username, email: $email})"
     tx.run(query, username=username, email=email)
 
-# Example of creating a user
-new_user = User("new_user", "new_user@example.com")
-create_user(new_user.get_Username(), new_user.get_Email())
-
+# Create new user 
 new_user1 = User("Ørnaren", "ørnarenørn@ørn.ørn")
 create_user(new_user1.get_Username(), new_user1.get_Email())
