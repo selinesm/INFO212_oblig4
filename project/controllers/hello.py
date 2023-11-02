@@ -5,7 +5,7 @@ from project.models.User import findUserByUsername
 #route index
 @app.route('/', methods=["GET", "POST"])
 def index():
-
+    data = {}
     if request.method == "POST":
         username = request.form["username"]
         try:
@@ -23,5 +23,4 @@ def index():
             "email": "Not specified"
         }
     
-    return render_template('index.html.j2', data = data)
-
+    return render_template('login.html', data = data)

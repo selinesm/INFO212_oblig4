@@ -1,4 +1,4 @@
-from my_services import app
+from project import app
 from flask import request, jsonify
 from neo4j import graph
 

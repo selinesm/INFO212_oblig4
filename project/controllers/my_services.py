@@ -1,10 +1,9 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, Flask
-from models.my_dao import *
-from models.User import *
+from project.models.my_dao import *
+from project.models.User import *
 from neo4j import GraphDatabase
-
-app = Blueprint("app", __name__)
+from project import app
 
 @app.route("/")
 def login():
