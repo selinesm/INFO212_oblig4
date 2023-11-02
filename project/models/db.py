@@ -1,5 +1,6 @@
 from models import Customer, Employee, Cars
 from neo4j import GraphDatabase
+from my_dao import save_car
 
 customers = [
     {
@@ -17,16 +18,19 @@ employees = [
     }
 ]
 
-cars = [
-    {
-        "id": 1,
-        "brand": "Ford",
-        "model": "Explorer",
-        "year": 2012,
-        "location": "Bergen",
-        "status": "Available"
-    }
-]
+
+def main():
+    save_car("Aston Martin", "DB9", "A1234", 2011, 5, 1, "available")
+    save_car("Ford", "Explorer", "B1234", 2012, 7, 2, "available")
+    save_car("Ford", "Focus", "C1234", 2009, 5, 3, "available")
+    save_car("Volvo", "v90", "D1234", 2022, 5, 4, "available")
+    
+
+if __name__ == "__main__":
+    main()
+
+
+
 
 def connect():
     uri = "neo4j+s://df132ca1.databases.neo4j.io"
