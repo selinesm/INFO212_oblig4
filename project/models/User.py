@@ -41,9 +41,13 @@ def create_user(username, email):
     driver = GraphDatabase.driver(URI, auth=AUTH)
 
     with driver.session() as session:
+        existing_username = session.run('MATCH (a:User) WHERE a.username = $username RETURN a', username=username).single()
+        if existing_username:
+            print(f'{username} already exists.')
         # Create a new user node in the database.
         session.write_transaction(_create_user, username, email)
-
+    
+        
 def _create_user(tx, username, email):
     query = "CREATE (u:User {username: $username, email: $email})"
     tx.run(query, username=username, email=email)
