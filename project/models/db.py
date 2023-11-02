@@ -1,13 +1,13 @@
 from models import Customer, Employee, Cars
 from neo4j import GraphDatabase
-from my_dao import save_car
 
 customers = [
     {
         "name": "John",
         "age": 30,
         "address": "Bergen 123"
-    },
+    }
+
 ]
 
 employees = [
@@ -19,6 +19,7 @@ employees = [
 ]
 print("""
 
+<<<<<<< HEAD
 
 
 
@@ -36,6 +37,18 @@ print("""
 
 
 """)
+=======
+cars = [
+    {
+        "id": 1,
+        "brand": "Ford",
+        "model": "Explorer",
+        "year": "2012",
+        "location": "Bergen",
+        "status": "Available"
+    }
+]
+>>>>>>> 12361e7377df319c4b00445a3a3081e38c488a52
 
 def connect():
     uri = "neo4j+s://df132ca1.databases.neo4j.io"
@@ -52,8 +65,8 @@ def connect():
         for employee_data in employees:
             create_employee_node(session, employee_data)
         
-        """for car_data in cars:
-            create_car_node(session, car_data)"""
+        for car_data in cars:
+            create_car_node(session, car_data)
 
     driver.close()
 
