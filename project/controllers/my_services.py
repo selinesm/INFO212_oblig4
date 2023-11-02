@@ -54,8 +54,8 @@ def save_car_info():
     record = json.loads(request.data)
     print(record)
     return save_car(
-        record['make'], record['model'], record['reg'],
-        record['year'], record['capacity'])
+        record['make'], record['model'], record['reg'], record['year'],
+        record['capacity'], record['id'], record['status'])
 
 @app.route('/update_car', methods=['PUT'])
 def update_car_info():
