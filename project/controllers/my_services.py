@@ -63,7 +63,7 @@ def update_car_info():
     print(record)
     return update_car(
         record['make'], record['model'], record['reg'],
-        record['year'], record['capacity'])
+        record['year'], record['capacity'], record['id'], record['status'])
 
 # The method uses the registration number to find the car
 # object from database and removes the records
@@ -74,13 +74,21 @@ def delete_car_info():
     delete_car(record['reg'])
     return findAllCars()
 
+
+
+
+
+
+
+URI = 'neo4j+s://df132ca1.databases.neo4j.io'
+AUTH =('neo4j', 'Cjwjw4-IB4plLSQIP648TceZuGI9ObbWiUkRbZ8YnRw')
 #Check if user has rented a car
 def check_user(user_id):
     query = """
     MATCH (u:User {id: $user_id})-[:HAS_RENTED]->(c:Car)
     RETURN COUNT(c) > 0 AS has_rented
     """
-    with GraphDatabase.driver(uri, auth=(user, password)) as driver:
+    with GraphDatabase.driver(URI, auth=AUTH) as driver:
         with driver.session() as session:
             result = session.run(query, user_id=user_id).single()
             if result:
