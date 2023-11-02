@@ -18,14 +18,12 @@ employees = [
     }
 ]
 
-
 def main():
     save_car("Aston Martin", "DB9", "A1234", 2011, 5, 1, "available")
     save_car("Ford", "Explorer", "B1234", 2012, 7, 2, "available")
     save_car("Ford", "Focus", "C1234", 2009, 5, 3, "available")
     save_car("Volvo", "v90", "D1234", 2022, 5, 4, "available")
     
-
 if __name__ == "__main__":
     main()
 
