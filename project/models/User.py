@@ -17,12 +17,6 @@ def findUserByUsername(username):
     
     else: 
         return None
-    
-customer_id = 0
-
-def create_id ():
-    customer_id += 1
-    return customer_id
 
 
 class User:
@@ -41,9 +35,6 @@ class User:
     
     def set_Email(self, value):
         self.email = value
-
-    def get_id():
-        return create_id()
 
     
 
@@ -69,5 +60,6 @@ create_user(new_user.get_Username(), new_user.get_Email())
 
 new_user1 = User("test", "test")
 create_user(new_user1.get_Username(), new_user1.get_Email())
+
 
 
