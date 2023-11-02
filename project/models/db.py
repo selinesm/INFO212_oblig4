@@ -6,16 +6,6 @@ customers = [
         "name": "John",
         "age": 30,
         "address": "Bergen 123"
-    },
-    {
-        "name": "Hans Olav",
-        "age": 21
-        "address": "Knutsen gate 11",
-    },
-    {
-        "name": "Petter",
-        "age": 19
-        "address": "Bjørnesvingen 51",  
     }
 
 ]
