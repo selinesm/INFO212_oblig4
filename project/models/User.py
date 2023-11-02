@@ -13,7 +13,7 @@ def findUserByUsername(username):
     data = _get_connection().execute_query('MATCH (a:User) where a.username = $username RETURN a;', username=username)
     if len(data[0])>0:
         user = User(username, data[0][0][0]['email'])
-        return [user.username, user.email]
+        return user
     
     else: 
         return None
@@ -52,5 +52,5 @@ def _create_user(tx, username, email):
 new_user = User("new_user", "new_user@example.com")
 create_user(new_user.get_Username(), new_user.get_Email())
 
-new_user1 = User("Ørnaren", "ørnarenørn@ørn.ørn")
+new_user1 = User("test", "test")
 create_user(new_user1.get_Username(), new_user1.get_Email())

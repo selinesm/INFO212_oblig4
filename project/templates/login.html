@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>ass4</title>
-</head>
+  <head>
+    <meta charset="utf-8">
+    <title>{{ data['title'] }}</title>
+  </head>
   <body>
-    <h1>
+<h1>
     Enter your user-name to retrieve information from database:
-    </h1>
+</h1>
+<form method="post">
+  Username: <input name="username"/>
+  <br/><br/>
+  <button type="submit">Submit</button>
+</form>
 
-    <form method="POST" action="/">
-      Username: <input type="text" id="username_id" name="username_id">
-      <input type="submit" value="START">
-    </form>
-
-    {% if error_message %}
-      <div class="error-message">{{ error_message }}</div>
-    {% endif %}
-
+<h1>Information from database</h1>
+    <h1>Username: {{ data['username'] }}</h1></br>
+    <h1>Email: {{ data['email'] }}</h1>
   </body>
 </html>

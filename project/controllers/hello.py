@@ -5,9 +5,9 @@ from project.models.User import findUserByUsername
 #route index
 @app.route('/', methods=["GET", "POST"])
 def index():
-    data = {}
     if request.method == "POST":
         username = request.form["username"]
+        data = {}
         try:
             user = findUserByUsername(username)
             data = {
@@ -24,3 +24,5 @@ def index():
         }
     
     return render_template('login.html', data = data)
+
+
