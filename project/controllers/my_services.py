@@ -40,10 +40,14 @@ def query_records():
 # object from database
 @app.route('/get_cars_by_reg_number', methods=['POST'])
 def find_car_by_reg_number():
-    record = json.loads(request.data)
-    print(record)
-    print(record['reg'])
-    return findCarByReg(record['reg'])
+    try:
+        record = request.get_json()  # Parse JSON data from the request body
+        print(record)
+        print(record['reg'])
+        return jsonify(findCarByReg(record['reg']))
+    except Exception as e:
+        return jsonify({"error": "Invalid JSON data or missing 'reg' field"}), 400
+
 
 @app.route('/save_car', methods=["POST"])
 def save_car_info():
