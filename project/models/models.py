@@ -8,14 +8,12 @@ class Cars:
         self.location = location
         self.status = status
 
-
 # CUSTOMER
 class Customer:
     def __init__(self, name, age, address):
         self.name = name
         self.age = age
         self.address = address
-
 
 # EMPLOYEE
 class Employee:
