@@ -19,14 +19,6 @@ employees = [
     }
 ]
 
-def main():
-    save_car("Aston Martin", "DB9", "A1234", 2011, 5, 1, "available")
-    save_car("Ford", "Explorer", "B1234", 2012, 7, 2, "available")
-    save_car("Ford", "Focus", "C1234", 2009, 5, 3, "available")
-    save_car("Volvo", "v90", "D1234", 2022, 5, 4, "available")
-    
-if __name__ == "__main__":
-    main()
 
 def connect():
     uri = "neo4j+s://df132ca1.databases.neo4j.io"
@@ -42,9 +34,6 @@ def connect():
         
         for employee_data in employees:
             create_employee_node(session, employee_data)
-        
-        for car_data in cars:
-            create_car_node(session, car_data)
 
     driver.close()
 

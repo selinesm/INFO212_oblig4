@@ -9,6 +9,10 @@ def _get_connection() -> Driver:
     driver.verify_connectivity()
     return driver
 
+
+def get_node(data):
+    return data[0][0][0]
+
 def node_to_json(node):
     node_properties = dict(node.items())
     return node_properties
@@ -35,9 +39,10 @@ def save_car(make, model, reg, year, capacity, id, status):
         "RETURN a;",
         make=make, model=model, reg=reg, year=year, capacity=capacity, id=id, status=status
     )
-    nodes_json = [node_to_json(record["a"]) for record in cars]
-    print(nodes_json)
-    return nodes_json
+    
+    node = get_node(cars)
+    node_json = node_to_json(node)
+    print(node_json)
 
 
 def update_car(make, model, reg, year, capacity, id, status):
@@ -53,7 +58,8 @@ def update_car(make, model, reg, year, capacity, id, status):
 def delete_car(reg):
     _get_connection().execute_query("MATCH (a:Car{reg: $reg}) delete a;", reg=reg)
 
-save_car("Volvo", "v90", "D1234", 2022, 5, 4, "available")
+
 save_car("Aston Martin", "DB9", "A1234", 2011, 5, 1, "available")
 save_car("Ford", "Explorer", "B1234", 2012, 7, 2, "available")
 save_car("Ford", "Focus", "C1234", 2009, 5, 3, "available")
+save_car("Volvo", "v90", "D1234", 2022, 5, 4, "available")
