@@ -9,7 +9,6 @@ def _get_connection() -> Driver:
     driver.verify_connectivity()
     return driver
 
-
 def get_node(data):
     return data[0][0][0]
 
@@ -57,7 +56,6 @@ def update_car(make, model, reg, year, capacity, id, status):
     
 def delete_car(reg):
     _get_connection().execute_query("MATCH (a:Car{reg: $reg}) delete a;", reg=reg)
-
 
 save_car("Aston Martin", "DB9", "A1234", 2011, 5, 1, "available")
 save_car("Ford", "Explorer", "B1234", 2012, 7, 2, "available")
