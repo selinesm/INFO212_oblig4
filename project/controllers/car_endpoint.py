@@ -1,8 +1,46 @@
 from project import app
 from flask import request, jsonify
 from neo4j import graph
+from project.models.my_dao import _get_connection
+from project.controllers.customer import *
+from project.models.my_dao import *
+from project.models.Customer import *
 
-@app.route('/rent-car', methods=['POST'])
+
+@app.route("/rent_car", methods=["POST"])
+def rent_car():
+    record = json.loads(request.data)
+    print(record)
+
+    # find status of car
+    car_status = findCarByReg(record["reg"])
+    car_status = car_status[0]["status"]
+    print(car_status)
+    
+    # find status of customer
+    customer_status = findCustomerById(record["id"])
+    customer_status = customer_status[0]["rented_car"]
+
+    if car_status == "available" and customer_status == False:
+
+        with _get_connection().session() as session:
+            car = session.run(
+                "MATCH (a:Car{reg:$reg}) set a.status=$status RETURN a;",
+                reg=record["reg"], status="unavailable"
+            )
+            customer = session.run(
+                "MATCH (a:Customer{id:$id}) set a.rented_car=$rented_car RETURN a;",
+                id=record["id"], rented_car=True
+            )
+            nodes_json_car = [node_to_json(record["a"]) for record in car]
+            print(nodes_json_car)
+            nodes_json_customer = [node_to_json(record["a"]) for record in customer]
+            print(nodes_json_customer)
+            return [nodes_json_car, nodes_json_customer]
+
+
+
+"""@app.route('/rent-car', methods=['POST'])
 def rent_car():
     data = request.get_json()
     customer_id = data.get('customer_id')
@@ -13,7 +51,7 @@ def rent_car():
     graph.run(query)
 
     return jsonify({'message': 'Car rented successfully'})
-
+"""
 
 @app.route('/return-car', methods=['POST'])
 def return_car():

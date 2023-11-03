@@ -1,6 +1,6 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, Flask
-from project.models.customer import *
+from project.models.Customer import *
 from project.models.User import *
 from neo4j import GraphDatabase
 from project import app
