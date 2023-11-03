@@ -27,14 +27,14 @@ def save_customer_info():
     record = json.loads(request.data)
     print(record)
     return save_customer(
-        record['name'], record['age'], record['id'], record['address'], record['rented_car'])
+        record['name'], record['age'], record['address'], record['ordered_car'], record["reg"], record["id"])
 
 @app.route('/update_customer', methods=['PUT'])
 def update_customer_info():
     record = json.loads(request.data)
     print(record)
     return update_customer(
-        record['name'], record['age'], record['address'], record['rented_car'], record["id"])
+        record['name'], record['age'], record['address'], record['ordered_car'], record["reg"], record["id"])
 
 
 @app.route('/delete_customer', methods=['DELETE'])
