@@ -1,6 +1,6 @@
 
 from flask import Blueprint, render_template, request, redirect, url_for, jsonify, Flask
-from project.models.Customer import *
+from project.models.customer import *
 from project.models.User import *
 from neo4j import GraphDatabase
 from project import app
@@ -27,14 +27,14 @@ def save_customer_info():
     record = json.loads(request.data)
     print(record)
     return save_customer(
-        record['name'], record['age'], record['address'], record['ordered_car'], record["reg"], record["id"])
+        record['name'], record['age'], record['address'], record['ordered_car'], record["reg"], record["id"], record["rented_car"])
 
 @app.route('/update_customer', methods=['PUT'])
 def update_customer_info():
     record = json.loads(request.data)
     print(record)
     return update_customer(
-        record['name'], record['age'], record['address'], record['ordered_car'], record["reg"], record["id"])
+        record['name'], record['age'], record['address'], record['ordered_car'], record["reg"], record["id"], record["rented_car"])
 
 
 @app.route('/delete_customer', methods=['DELETE'])

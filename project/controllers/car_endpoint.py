@@ -91,7 +91,7 @@ def rent_car():
         with _get_connection().session() as session:
             car = session.run(
                 "MATCH (a:Car{reg:$reg}) set a.status=$status RETURN a;",
-                reg=record["reg"], status="booked"
+                reg=record["reg"], status="rented"
             )
             customer = session.run(
                 "MATCH (a:Customer{id:$id}) set a.reg=$reg, a.rented_car=$rented_car RETURN a;",
@@ -123,20 +123,21 @@ def return_car():
     customer_ordered_car = temp[0]["ordered_car"]
 
     if car_status == "rented" and customer_ordered_car == True:
-        # Håndter tilfelle der kunden har leid bilen
-        car_status = "available"
-        if "car_status" in record:
-            # Sjekk om det er en "car_status" -parameter i forespørselen for å oppdatere bilens tilstand
-            car_status = record["car_status"]
 
         with _get_connection().session() as session:
-            car = session.run(
-                "MATCH (a:Car{reg:$reg}) set a.status=$status RETURN a;",
-                reg=record["reg"], status=car_status
-            )
+            if "damage" in record:
+                car = session.run(
+                    "MATCH (a:Car{reg:$reg}) set a.status=$status RETURN a;",
+                    reg=record["reg"], status="damaged"
+                )
+            else:
+                car = session.run(
+                    "MATCH (a:Car{reg:$reg}) set a.status=$status RETURN a;",
+                    reg=record["reg"], status="available"
+                )
             customer = session.run(
-                "MATCH (a:Customer{id:$id}) set a.ordered_car=$ordered_car, reg=$reg RETURN a;",
-                id=record["id"], ordered_car=False, reg=False
+                "MATCH (a:Customer{id:$id}) set a.ordered_car=$ordered_car, a.rented_car=$rented_car, a.reg=$reg RETURN a;",
+                id=record["id"], ordered_car=False, rented_car=False, reg=False
             )
             nodes_json_car = [node_to_json(record["a"]) for record in car]
             print(nodes_json_car)

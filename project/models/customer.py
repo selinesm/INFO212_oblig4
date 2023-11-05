@@ -34,7 +34,7 @@ def findCustomerById(id):
 def save_customer(name, age, address, ordered_car, rented_car, reg, id):
     customers = _get_connection().execute_query(
         "MERGE (a:Customer {id: $id}) "
-        "SET a.name = $name, a.age = $age, a.address = $address, a.ordered_car = $ordered_car, a.reg=$reg, a.id = $id "
+        "SET a.name = $name, a.age = $age, a.address = $address, a.ordered_car = $ordered_car, a.rented_car=$rented_car, a.reg=$reg, a.id = $id "
         "RETURN a;",
         name=name, age=age, address=address, ordered_car=ordered_car, rented_car=rented_car, reg=reg, id=id
     )
@@ -44,13 +44,13 @@ def save_customer(name, age, address, ordered_car, rented_car, reg, id):
     return node_json
 
 
-def update_customer(name, age, address, ordered_car, reg, id):
+def update_customer(name, age, address, ordered_car, reg, id, rented_car):
     with _get_connection().session() as session:
         customers = _get_connection().execute_query(
         "MERGE (a:Customer {id: $id}) "
-        "SET a.name = $name, a.age = $age, a.address = $address, a.ordered_car = $ordered_car, a.reg=$reg, a.id = $id "
+        "SET a.name = $name, a.age = $age, a.address = $address, a.ordered_car = $ordered_car, a.reg=$reg, a.id = $id a.rented_car=$rented_car "
         "RETURN a;",
-        name=name, age=age, address=address, ordered_car=ordered_car, reg=reg, id=id
+        name=name, age=age, address=address, ordered_car=ordered_car, reg=reg, id=id, rented_car=rented_car
         )
         node = get_node(customers)
         node_json = node_to_json(node)
