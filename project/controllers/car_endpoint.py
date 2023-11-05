@@ -4,7 +4,7 @@ from neo4j import graph
 from project.models.my_dao import _get_connection
 from project.controllers.customer import *
 from project.models.my_dao import *
-from project.models.Customer import *
+from project.models.customer import *
 
 """
 Customer:
