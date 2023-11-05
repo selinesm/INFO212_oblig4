@@ -5,32 +5,6 @@ from project.models.User import *
 from neo4j import GraphDatabase
 from project import app
 
-"""@app.route("/")
-def login():
-    return render_template("login.html")
-
-@app.route("/", methods=["POST"])
-def process_input():
-    error_message = None
-    username = request.form.get("username_id")
-    user_info = findUserByUsername(username)
-
-    try:
-        if user_info:
-            print(user_info)
-            return redirect(url_for("app.home", username=user_info[0], useremail=user_info[1]))
-        else:
-            error_message = "Invalid account"
-    except Exception as e:
-        error_message = f"Error: {str(e)}"
-
-    return render_template("login.html", error_message=error_message)
-
-
-@app.route("/<username><useremail>")
-def home(username, useremail):
-    return render_template("home.html", username=username, useremail=useremail)"""
-
 
 @app.route("/get_cars", methods=["GET"])
 def query_records():
@@ -63,7 +37,7 @@ def update_car_info():
     print(record)
     return update_car(
         record['make'], record['model'], record['reg'],
-        record['year'], record['capacity'], record['id'], record['status'])
+        record['year'], record['capacity'], record['id'], record['status'], record)
 
 # The method uses the registration number to find the car
 # object from database and removes the records
@@ -77,31 +51,3 @@ def delete_car_info():
 
 
 
-
-
-
-URI = 'neo4j+s://df132ca1.databases.neo4j.io'
-AUTH =('neo4j', 'Cjwjw4-IB4plLSQIP648TceZuGI9ObbWiUkRbZ8YnRw')
-#Check if user has rented a car
-def check_user(user_id):
-    query = """
-    MATCH (u:User {id: $user_id})-[:HAS_RENTED]->(c:Car)
-    RETURN COUNT(c) > 0 AS has_rented
-    """
-    with GraphDatabase.driver(URI, auth=AUTH) as driver:
-        with driver.session() as session:
-            result = session.run(query, user_id=user_id).single()
-            if result:
-                has_rented = result["has_rented"]
-                return has_rented
-            else:
-                return False
-
-@app.route('/check_user/<int:user_id>')
-def check_rental_status(user_id):
-    has_rented = check_user(user_id)
-    
-    if has_rented:
-        return 'User has rented a car'
-    else:
-        return 'User has not rented a car'

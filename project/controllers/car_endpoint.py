@@ -1,5 +1,5 @@
 from project import app
-from flask import request, jsonify
+from flask import request, jsonify, make_response
 from neo4j import graph
 from project.models.my_dao import _get_connection
 from project.controllers.customer import *
@@ -11,6 +11,9 @@ Customer:
     ordered_car = True/False
         - True: customer have a placed car order
         - False: customer have no car order
+    rented_car = True/False
+        - True: customer is renting car
+        - False: customer is not renting car
 
     reg = False/reg-number
         - False: no car is booked
@@ -28,7 +31,7 @@ Car:
     # Order Car
 # -------------------
 @app.route("/order_car", methods=["POST"])
-def rent_car():
+def order_car():
     record = json.loads(request.data)
     print(record)
 
@@ -39,9 +42,10 @@ def rent_car():
     
     # find status of customer
     temp = findCustomerById(record["id"])
-    customer_status = temp[0]["ordered_car"]
+    customer_ordered_car = temp[0]["ordered_car"]
+    print(customer_ordered_car)
 
-    if car_status == "available" and customer_status == False:
+    if car_status == "available" and customer_ordered_car == False:
 
         with _get_connection().session() as session:
             car = session.run(
@@ -57,6 +61,8 @@ def rent_car():
             nodes_json_customer = [node_to_json(record["a"]) for record in customer]
             print(nodes_json_customer)
             return [nodes_json_car, nodes_json_customer]
+    else:
+        return make_response(jsonify({"error": "Car is already booked or customer have an existing booking"}), 400)
 
 
 # -------------------
@@ -74,10 +80,13 @@ def rent_car():
     
     # find status of customer
     temp = findCustomerById(record["id"])
-    customer_status = temp[0]["ordered_car"]
+    customer_ordered_car = temp[0]["ordered_car"]
+    print(customer_ordered_car)
     customer_car_reg = temp[0]["reg"]
+    print(customer_car_reg)
+    customer_rented_car = temp[0]["rented_car"]
 
-    if car_status == "booked" and customer_status == False and customer_car_reg == record["reg"]:
+    if car_status=="booked" and customer_ordered_car==True and customer_car_reg==record["reg"] and customer_rented_car==False:
 
         with _get_connection().session() as session:
             car = session.run(
@@ -85,14 +94,16 @@ def rent_car():
                 reg=record["reg"], status="booked"
             )
             customer = session.run(
-                "MATCH (a:Customer{id:$id}) set a.ordered_car=$ordered_car, a.reg=$reg RETURN a;",
-                id=record["id"], ordered_car=True, reg=record["reg"]
+                "MATCH (a:Customer{id:$id}) set a.reg=$reg, a.rented_car=$rented_car RETURN a;",
+                id=record["id"], reg=record["reg"], rented_car=True
             )
             nodes_json_car = [node_to_json(record["a"]) for record in car]
             print(nodes_json_car)
             nodes_json_customer = [node_to_json(record["a"]) for record in customer]
             print(nodes_json_customer)
             return [nodes_json_car, nodes_json_customer]
+    else:
+        return make_response(jsonify({"error": "Car is not booked, customer have no booking, customer already rented or the booked car-reg is wrong"}), 400)
 
 
 # -------------------
@@ -109,9 +120,9 @@ def return_car():
     print(car_status)
 
     temp = findCustomerById(record["id"])
-    customer_status = temp[0]["rented_car"]
+    customer_ordered_car = temp[0]["ordered_car"]
 
-    if car_status == "rented" and customer_status == True:
+    if car_status == "rented" and customer_ordered_car == True:
         # Håndter tilfelle der kunden har leid bilen
         car_status = "available"
         if "car_status" in record:
@@ -132,7 +143,8 @@ def return_car():
             nodes_json_customer = [node_to_json(record["a"]) for record in customer]
             print(nodes_json_customer)
             return [nodes_json_car, nodes_json_customer]
-
+    else:
+        return make_response(jsonify({"error": "message"}), 400)
 
 
 # -------------------
@@ -149,10 +161,17 @@ def cancel_order_car():
     print(car_status)
     
     # find status of customer
-    customer_status = findCustomerById(record["id"])
-    customer_status = customer_status[0]["ordered_car"]
+    temp = findCustomerById(record["id"])
+    customer_ordered_car = temp[0]["ordered_car"]
 
-    if car_status == "booked" and customer_status == True:
+    # find status of customer
+    temp = findCustomerById(record["id"])
+    customer_ordered_car = temp[0]["ordered_car"]
+    print(customer_ordered_car)
+    customer_car_reg = temp[0]["reg"]
+    print(customer_car_reg)
+
+    if car_status=="booked" and customer_ordered_car==True and customer_car_reg==record["reg"]:
 
         with _get_connection().session() as session:
             car = session.run(
@@ -160,11 +179,13 @@ def cancel_order_car():
                 reg=record["reg"], status="available"
             )
             customer = session.run(
-                "MATCH (a:Customer{id:$id}) set a.ordered_car=$ordered_car, a.reg=$reg RETURN a;",
-                id=record["id"], ordered_car=False, reg=False
+                "MATCH (a:Customer{id:$id}) set a.ordered_car=$ordered_car, a.rented_car=$rented_car, a.reg=$reg RETURN a;",
+                id=record["id"], ordered_car=False, rented_car=False, reg=False
             )
             nodes_json_car = [node_to_json(record["a"]) for record in car]
             print(nodes_json_car)
             nodes_json_customer = [node_to_json(record["a"]) for record in customer]
             print(nodes_json_customer)
             return [nodes_json_car, nodes_json_customer]
+    else:
+        return make_response(jsonify({"error": "Car/Customer have no registerd booking"}), 400)

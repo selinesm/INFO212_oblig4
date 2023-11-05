@@ -40,18 +40,15 @@ def save_car(make, model, reg, year, capacity, id, status):
     )
     node = get_node(cars)
     node_json = node_to_json(node)
-    print(node_json)
+    return node_json
 
 
-def update_car(make, model, reg, year, capacity, id, status):
+def update_car(make, model, reg, year, capacity, id, status, record):
     with _get_connection().session() as session:
         cars = session.run(
             "MATCH (a:Car{reg:$reg}) set a.make=$make, a.model=$model, a.year = $year, a.capacity = $capacity, a.id = $id, a.status = $status RETURN a;",
             reg=reg, make=make, model=model, year=year, capacity=capacity, id=id, status=status)
-        print(cars)
-        nodes_json = [node_to_json(record["a"]) for record in cars]
-        print(nodes_json)
-        return nodes_json
+        return record
     
 def delete_car(reg):
     _get_connection().execute_query("MATCH (a:Car{reg: $reg}) delete a;", reg=reg)
