@@ -160,10 +160,6 @@ def cancel_order_car():
     temp = findCarByReg(record["reg"])
     car_status = temp[0]["status"]
     print(car_status)
-    
-    # find status of customer
-    temp = findCustomerById(record["id"])
-    customer_ordered_car = temp[0]["ordered_car"]
 
     # find status of customer
     temp = findCustomerById(record["id"])
