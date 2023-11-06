@@ -57,9 +57,3 @@ def _create_user(tx, username, email):
 # Example of creating a user
 new_user = User("new_user", "new_user@example.com")
 create_user(new_user.get_Username(), new_user.get_Email())
-
-new_user1 = User("test", "test")
-create_user(new_user1.get_Username(), new_user1.get_Email())
-
-
-
